@@ -1,0 +1,64 @@
+#CI de nível 1 - Disparo Manual a partir de um Clic.
+
+# Definir o nome da pipeline (mesmo nome que irá aparecer no Git Actions)
+
+name: ' Execuão Manual'
+
+#regras de disparos ou gatilhos / triggers
+# pode ser a partir de um horárioo, de eum evento de outro pipelime
+# para esse caso, iremos usar uma trigger de disparo manual é o workflow_dispatch
+#como estamos usando nesta conf. de pipeline o yanl, não temos abertura e fechamento de chaves na declaração da pipeline.
+# Faremos apenas uma rebra de linha e um tab.
+#gatinho vai dentro do on
+
+
+
+on:
+  workflow_dispatch:
+
+  # Definir o nome do Job. Trabalho/tarefa que será executada dentro da pipeline
+  # Definir o nome do Job. Trabalho/tarefa que será executada dentro da pipeline
+  # O nome do job é o que aparece na tela do Git Actions
+  #cuidar da identação, pois o GitHub Actions é sensível a espaços e tabulações.
+
+jobs:
+   e2e-test:
+
+   #define a maquina que o job vai executar; pode ser uma maquina que tenhamos controle, mas neste caso, teriamos que subir uma maquina se'rvice house' ou 
+   # usar uma máquina do gitHub.
+
+   runs-on: ubuntu-latest
+
+  
+  # passos do script de build
+    steps:
+     
+    #clone do projeto
+    # - uses comando usado para selecionar uma actions a ser executada
+    - uses: actions/checkout@v4
+
+
+   #instação do Node.js
+    - uses  actions/setup-node@v4
+      with:
+        node-version: latest # ultima versão do node.js que será instalada
+
+    #instalação do yarn
+    - name: instalando Yarn
+      run: npm install -g yarn
+
+    #instalação das dependências do projeto
+    - name: instalando dependencias
+      run: yarn
+      
+    #instalação do playwright
+    - name: instalando Playwright
+      run: yarn playwright install
+
+     #execução dos testes e2e
+    - name: executando testes e2e
+      run: yarn run e2e 
+
+  
+
+
