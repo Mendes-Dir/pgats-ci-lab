@@ -1,0 +1,35 @@
+name: Execucao Agendada de Testes E2E
+
+on:
+  shwedule:
+    # Executa o workflow todos os dias às 2:00 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  e2e-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Clonando o repositório
+      - uses: actions/checkout@v4
+
+      # Instalação do Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'  # ou defina uma versão fixa, como '20'
+
+      # Instalação do Yarn
+      - name: Instalando Yarn
+        run: npm install -g yarn
+
+      # Instalação das dependências do projeto
+      - name: Instalando dependências
+        run: yarn
+
+      # Instalação do Playwright
+      - name: Instalando Playwright
+        run: yarn playwright install
+
+      # Execução dos testes E2E
+      - name: Executando testes E2E
+        run: yarn run e2e
